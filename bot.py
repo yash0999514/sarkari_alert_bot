@@ -1,29 +1,16 @@
-import os
-import logging
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import telebot
 
-# Logging setup
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+# Replace with your actual Telegram bot token
+TOKEN = '7801001027:AAGyimggZcZmGWRweWDuk3JU5OZ2vzPppks'
+bot = telebot.TeleBot(TOKEN)
 
-# Read token from environment
-BOT_TOKEN = os.getenv("7801001027:AAGyimggZcZmGWRweWDuk3JU5OZ2vzPppks")
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    bot.reply_to(message, "Welcome! This is the Sarkari Alert Bot. Use /notify to get exam alerts.")
 
-# /start command
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("📢 Welcome to Sarkari Alert Bot!")
+@bot.message_handler(commands=['notify'])
+def send_alert(message):
+    bot.reply_to(message, "📢 Sarkari Exam Notification:\nUPSC NDA II Exam Date: 01 Sep 2025\nOfficial Link: https://upsc.gov.in")
 
-def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-
-    print("✅ Bot is running...")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()
+print("Bot is running...")
+bot.polling()
