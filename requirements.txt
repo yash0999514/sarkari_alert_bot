@@ -1,0 +1,2 @@
+pypython-telegram-bot==20.6
+schedule               # if using scheduled jobs
